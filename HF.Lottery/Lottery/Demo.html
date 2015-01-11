@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script type="text/javascript" src="js/jquery-1.7.2-min.js"></script>
+    <script type="text/javascript" src="js/animateBackground-plugin.js"></script>
+    <style type="text/css">
+        #total {
+            width: 500px;
+            height: 40px;
+            line-height: 40px;
+            margin: 80px auto 20px auto;
+            font-size: 20px;
+        }
+
+            #total .t_num {
+                display: inline-block;
+                line-height: 13px;
+                margin: 2px 4px 0 4px;
+            }
+
+                #total .t_num i {
+                    width: 15px;
+                    height: 23px;
+                    display: inline-block;
+                    background: url(images/number.png) no-repeat;
+                    background-position: 0 0;
+                    text-indent: -999em;
+                }
+    </style>
+
+</head>
+<body>
+    <div id="total">
+        <span class="t_num">
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+        </span>次
+    </div>
+    <script>
+        function show_num(n) {
+            var it = $(".t_num i");
+            var len = String(n).length;
+            for (var i = 0; i < len; i++) {
+                if (it.length <= i) {
+                    $(".t_num").append("<i></i>");
+                }
+                var num = String(n).charAt(i);
+                var y = -parseInt(num) * 30; //y轴位置
+                var obj = $(".t_num i").eq(i);
+                obj.animate({ //滚动动画
+                    backgroundPosition: '(0 ' + String(y) + 'px)'
+                }, 'slow', 'swing', function () { }
+                );
+            }
+        }
+
+
+        function go() {
+            $(".num").each(function (index) {
+                var _num = $(this);
+                //setTimeout(function () {
+                //    _num.animate({
+                //        backgroundPositionY: (u * 60) - (u * num_arr[index])
+                //    }, {
+                //        duration: 6000 + index * 3000,
+                //        easing: "easeInOutCirc",
+                //        complete: function () {
+                //            if (index == 3) {
+                //                isBegin = false;
+                //                addPrize(num);
+
+                //                if (currentPrize.persons.length < currentPrize.num)
+                //                    go();
+                //            }
+                //            //var pos = _num.css('backgroundPositionY').replace('px','');
+                //            //_num.css('backgroundPositionY',pos%u);
+
+
+                //        }
+                //    });
+                //}, index * 300);
+            });
+        }
+    </script>
+</body>
+</html>
