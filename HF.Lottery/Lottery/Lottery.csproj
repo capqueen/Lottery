@@ -62,6 +62,7 @@
   <ItemGroup>
     <Content Include="Demo.html" />
     <Content Include="images\number.png" />
+    <Content Include="images\number1.png" />
     <Content Include="images\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>

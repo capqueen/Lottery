@@ -4,92 +4,226 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <script type="text/javascript" src="js/jquery-1.7.2-min.js"></script>
-    <script type="text/javascript" src="js/animateBackground-plugin.js"></script>
+    <!--<script type="text/javascript" src="js/animateBackground-plugin.js"></script>-->
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script type="text/javascript" src="employee.js"></script>
+    <script type="text/javascript" src="Scripts/JSLINQ.js"></script>
+    <script type="text/javascript" src="Scripts/datajs-1.1.3.min.js"></script>
     <style type="text/css">
         #total {
             width: 500px;
             height: 40px;
             line-height: 40px;
-            margin: 80px auto 20px auto;
+            margin: 80px auto 20px 0px;
             font-size: 20px;
+
         }
 
             #total .t_num {
                 display: inline-block;
                 line-height: 13px;
-                margin: 2px 4px 0 4px;
+                /*margin: 2px 4px 0 4px;*/
+                border: 1px solid rgb(223, 216, 216);
             }
 
                 #total .t_num i {
                     width: 15px;
                     height: 23px;
                     display: inline-block;
-                    background: url(images/number.png) no-repeat;
+                    background: url(images/number2.png) repeat-y;
                     background-position: 0 0;
                     text-indent: -999em;
+                    margin-top: 4px;
                 }
+        .left, .right {
+            float:left;
+        }
+        .left {
+            width:70%;
+        }
+        .right {
+            width:25%;
+            margin-top:50px;
+        }
     </style>
 
 </head>
 <body>
-    <div id="total">
-        <span class="t_num">
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-        </span>次
+    <div class="contain">
+        <div class="left">
+            <div id="total">
+                <span class="t_num">
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                </span>
+                <span class="t_num">
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                    <i style="background-position: 0px 0px;"></i>
+                </span>
+            </div>
+            <div><input type="button" id="start" value="开始" /></div>
+        </div>
+        <div class="right">
+            <select id="prizeList">
+                <option value="0">一等奖</option>
+                <option value="1">二等奖</option>
+                <option value="2">三等奖</option>
+                <option value="3">四等奖</option>
+                <option value="4">五等奖</option>
+                <option value="5">六等奖</option>
+                <option value="6">七等奖</option>
+                <option value="7">八等奖</option>
+                <option value="8">九等奖</option>
+                <option value="9">十等奖</option>
+            </select>
+            <input type="button" id="reset" value="重置" />
+            <div id="resultprize">
+                <div>
+                    共<span></span>名
+                </div>
+            </div>
+        </div>
     </div>
     <script>
-        function show_num(n) {
-            var it = $(".t_num i");
-            var len = String(n).length;
-            for (var i = 0; i < len; i++) {
-                if (it.length <= i) {
-                    $(".t_num").append("<i></i>");
-                }
-                var num = String(n).charAt(i);
-                var y = -parseInt(num) * 30; //y轴位置
-                var obj = $(".t_num i").eq(i);
-                obj.animate({ //滚动动画
-                    backgroundPosition: '(0 ' + String(y) + 'px)'
-                }, 'slow', 'swing', function () { }
-                );
+        var store = datajs.createStore('hfLottery');
+        function numRand() {
+            var x = currentPersons.length; //上限
+            var y = 0000; //下限
+            var rand = parseInt(Math.random() * (x - y + 1) + y);
+            return rand;
+        }
+        Array.prototype.remove = function (indexNum) {
+            if (isNaN(indexNum) || indexNum > this.length) {
+                return false;
             }
+            this.splice(indexNum, 1);
+        }
+        String.prototype.pedLeft = function (char, len) {
+            var c = char[0];
+            if (this.length >= len) return this;
+            var txt = '';
+            var l = len - this.length;
+            for (var i = 0; i < l; i++) {
+                txt += c;
+            }
+
+            return txt + this;
+        };
+        var currentPrize = prize[0];
+        var currentPersons = [];
+        function addPrize(index) {
+            var person = currentPersons[index];
+            currentPrize.persons.push(currentPersons[index]);
+            //删除
+            currentPersons.remove(currentPersons[index]);
+            emplyees.remove(currentPersons[index]);
+            $('#resultprize').append('<div>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></div>')
+            setTimeout(function () {
+                try {
+                    store.addOrUpdate('prize', prize);
+                }
+                catch (e) { }
+            }, 1);
         }
 
+        $(document).ready(function () {
+            var isStart = false;
+            var canBegin = true;
+            var u = 300;
 
-        function go() {
-            $(".num").each(function (index) {
-                var _num = $(this);
-                //setTimeout(function () {
-                //    _num.animate({
-                //        backgroundPositionY: (u * 60) - (u * num_arr[index])
-                //    }, {
-                //        duration: 6000 + index * 3000,
-                //        easing: "easeInOutCirc",
-                //        complete: function () {
-                //            if (index == 3) {
-                //                isBegin = false;
-                //                addPrize(num);
+            LoadCurrentPersion();//加载默认开始奖项的候选人
+            changePrize();//加载奖项
 
-                //                if (currentPrize.persons.length < currentPrize.num)
-                //                    go();
-                //            }
-                //            //var pos = _num.css('backgroundPositionY').replace('px','');
-                //            //_num.css('backgroundPositionY',pos%u);
+            $('#start').click(function () {
+                if (!canBegin) return;
+                if (isStart) {
+                    canBegin = false;                                           
+                    var num = numRand();
+                    var result = currentPersons[num].id.toString().pedLeft('0', 6);                    
+                    var num_arr = (result + '').split('');
+                        //开始减速动画
+                        $('.t_num i').each(function (index) {
+                            var _num = $(this);
+                            
+                            setTimeout(function () {
+                                clearInterval(_num.data('ani'));
+                                var px = _num.css('background-position-y').substring(0, _num.css('background-position-y').length - 2);
+                                _num.animate({
 
+                                    backgroundPositionY: (300 - num_arr[index] * 30) + (Math.round(px / u) + 1) * (index + 1) * u//(u * 60) - (u * num_arr[index])
+                                }, {
+                                    duration: 600 + index * 300,
+                                    easing: "jswing",                                   
+                                    complete: function () {
+                                        if (index == 5) {
+                                            isStart = false;
+                                            canBegin = true;
+                                            addPrize(num);
+                                        }
+                                    }
+                                });
+                            }, index * 300);
+                        })                    
+                }
+                else {
+                    isStart = true;
+                    $('.t_num i').each(function (index) {
+                        var targert = $(this);
+                        var t = setInterval(function () {
+                            var px = targert.css('background-position-y').substring(0, targert.css('background-position-y').length - 2);
+                            if (px == "" || px == 0) { px = index * 25 + index; };
+                            targert.css('background-position-y', (parseInt(px) + 1) + "px");
+                        }, 1);
+                        targert.data('ani', t);
+                    });
 
-                //        }
-                //    });
-                //}, index * 300);
+                }
             });
-        }
+            function LoadCurrentPersion() {
+                var c = JSLINQ(emplyees).Where(function (item) {
+                    if (item == null || item.age == null)
+                        return false;
+                    return item.age >= currentPrize.zone.min && item.age <= currentPrize.zone.max;
+                })
+                currentPersons = c.items;
+            }
+
+            function changePrize() {
+                var index = $('#prizeList option:selected').val();
+                currentPrize = prize[index];
+                //
+                $('#resultprize').text('');
+                $('#resultprize').append('<div>共<span>' + currentPrize.num + '</span>名</div>');
+                currentPrize.persons.forEach(function (person) {
+                    $('#resultprize').append('<div>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></div>');
+                });
+            }
+            $('#prizeList').change(function () {
+                changePrize();
+            });
+            $('#reset').click(function () {
+                store.read('prize', function (key, value) {
+                    if (value != null && value.length > 0) {
+                        value.forEach(function (item, index) {
+                            if (prize.length >= index) {
+                                prize[index].persons = [];
+                            }
+                        });
+
+                        changePrize();//加载奖项
+                    }
+
+                });
+            })
+        });   
     </script>
 </body>
 </html>
