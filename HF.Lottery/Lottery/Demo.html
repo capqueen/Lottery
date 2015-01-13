@@ -142,12 +142,25 @@
 
             LoadCurrentPersion();//加载默认开始奖项的候选人
             changePrize();//加载奖项
+            store.read('prize', function (key, value) {
+                console.log(value);
+                if (value != null && value.length > 0) {
+                    value.forEach(function (item, index) {
+                        if (prize.length >= index) {
+                            prize[index].persons = item.persons;
+                        }
+                    });
 
+                    changePrize();//加载奖项
+                }
+
+            });
             $('#start').click(function () {
                 if (!canBegin) return;
+                if (currentPrize.persons.length >= currentPrize.num) return;
                 if (isStart) {
                     canBegin = false;                                           
-                   
+                    $(this).val('开始');
                     $('#total .t_num').each(function (i) {
                         var num = numRand();
                         var result = currentPersons[num].id.toString().pedLeft('0', 6);
@@ -179,6 +192,7 @@
                 }
                 else {
                     isStart = true;
+                    $(this).val('停止');
                     $('#total .t_num i').each(function (index) {
                         var targert = $(this);
                         var t = setInterval(function () {
@@ -214,7 +228,7 @@
                 {
                     $('#copy .t_num').clone(true).appendTo('#total');
                 }
-
+                $('#start').val('开始');
 
                 //
                 $('#resultprize').text('');
