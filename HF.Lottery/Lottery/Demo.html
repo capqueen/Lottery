@@ -12,9 +12,8 @@
     <style type="text/css">
         #total {
             width: 500px;
-            height: 40px;
             line-height: 40px;
-            margin: 80px auto 20px 0px;
+            margin: 80px 4px 0 4px;
             font-size: 20px;
 
         }
@@ -22,7 +21,7 @@
             #total .t_num {
                 display: inline-block;
                 line-height: 13px;
-                /*margin: 2px 4px 0 4px;*/
+                margin: auto 4px 0 4px;
                 border: 1px solid rgb(223, 216, 216);
             }
 
@@ -59,15 +58,7 @@
                     <i style="background-position: 0px 0px;"></i>
                     <i style="background-position: 0px 0px;"></i>
                     <i style="background-position: 0px 0px;"></i>
-                </span>
-                <span class="t_num">
-                    <i style="background-position: 0px 0px;"></i>
-                    <i style="background-position: 0px 0px;"></i>
-                    <i style="background-position: 0px 0px;"></i>
-                    <i style="background-position: 0px 0px;"></i>
-                    <i style="background-position: 0px 0px;"></i>
-                    <i style="background-position: 0px 0px;"></i>
-                </span>
+                </span>              
             </div>
             <div><input type="button" id="start" value="开始" /></div>
         </div>
@@ -91,6 +82,16 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="copy">
+        <span class="t_num">
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+            <i style="background-position: 0px 0px;"></i>
+        </span>
     </div>
     <script>
         var store = datajs.createStore('hfLottery');
@@ -146,13 +147,15 @@
                 if (!canBegin) return;
                 if (isStart) {
                     canBegin = false;                                           
-                    var num = numRand();
-                    var result = currentPersons[num].id.toString().pedLeft('0', 6);                    
-                    var num_arr = (result + '').split('');
+                   
+                    $('#total .t_num').each(function (i) {
+                        var num = numRand();
+                        var result = currentPersons[num].id.toString().pedLeft('0', 6);
+                        var num_arr = (result + '').split('');
                         //开始减速动画
-                        $('.t_num i').each(function (index) {
+                        $(this).children('i').each(function (index) {
                             var _num = $(this);
-                            
+
                             setTimeout(function () {
                                 clearInterval(_num.data('ani'));
                                 var px = _num.css('background-position-y').substring(0, _num.css('background-position-y').length - 2);
@@ -161,7 +164,7 @@
                                     backgroundPositionY: (300 - num_arr[index] * 30) + (Math.round(px / u) + 1) * (index + 1) * u//(u * 60) - (u * num_arr[index])
                                 }, {
                                     duration: 600 + index * 300,
-                                    easing: "jswing",                                   
+                                    easing: "jswing",
                                     complete: function () {
                                         if (index == 5) {
                                             isStart = false;
@@ -171,16 +174,17 @@
                                     }
                                 });
                             }, index * 300);
-                        })                    
+                        })
+                    });
                 }
                 else {
                     isStart = true;
-                    $('.t_num i').each(function (index) {
+                    $('#total .t_num i').each(function (index) {
                         var targert = $(this);
                         var t = setInterval(function () {
                             var px = targert.css('background-position-y').substring(0, targert.css('background-position-y').length - 2);
                             if (px == "" || px == 0) { px = index * 25 + index; };
-                            targert.css('background-position-y', (parseInt(px) + 1) + "px");
+                            targert.css('background-position-y', (parseInt(px) + 2) + "px");
                         }, 1);
                         targert.data('ani', t);
                     });
@@ -199,6 +203,19 @@
             function changePrize() {
                 var index = $('#prizeList option:selected').val();
                 currentPrize = prize[index];
+
+                $('.t_num i').each(function (index) {
+                    clearInterval($(this).data('ani'));
+                });
+                isStart = false;
+                canBegin = true;
+                $('#total').text('');
+                for (var i = 0; i < currentPrize.num; i++)
+                {
+                    $('#copy .t_num').clone(true).appendTo('#total');
+                }
+
+
                 //
                 $('#resultprize').text('');
                 $('#resultprize').append('<div>共<span>' + currentPrize.num + '</span>名</div>');
