@@ -1,77 +1,304 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>数字摇奖(老虎机)</title>
-<script type="text/javascript" src="js/jquery-1.7.2-min.js"></script>
-<script type="text/javascript" src="js/easing.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>数字摇奖(老虎机)</title>
+    <script type="text/javascript" src="js/jquery-1.7.2-min.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
     <script type="text/javascript" src="employee.js"></script>
-<style>
-html,body{margin:0;padding:0;overflow:hidden;}
-/*body{background:url(images/body_bg.jpg) 0px 0px repeat-x #000;}*/
-.main_bg{background:url(images/main_bg.jpg) top center no-repeat;height:1000px;}
-.main{width:1000px;height:1000px;position:relative;margin:0 auto;}
-.num_mask{background:url(images/num_mask.png) 0px 0px no-repeat;height:184px;width:740px;position:absolute;left:50%;top:340px;margin-left:-370px;z-index:9;}
-.num_box{height:450px;width:750px;position:absolute;left:50%;top:340px;margin-left:-370px;z-index:8;overflow:hidden;text-align:center;}
-.num{background:url(images/num.png) top center repeat-y;width:181px;height:265px;float:left;margin-right:6px;}
-.btn{background:url(images/btn_start.png) 0px 0px no-repeat;width:264px;height:89px;position:absolute;left:50%;bottom:50px;margin-left:-132px;cursor:pointer;clear:both;}
-</style>
+    <script type="text/javascript" src="Scripts/JSLINQ.js"></script>
+    <script type="text/javascript" src="Scripts/datajs-1.1.3.min.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background: url(images/body_bg.jpg) 0px 0px repeat-x #000;
+        }
+
+        .main_bg {
+            background: url(images/main_bg.jpg) top center no-repeat;
+            height: 1000px;
+            background-position-x: -300px; /*add*/
+        }
+
+        .main {
+            width: 1000px;
+            height: 1000px;
+            position: relative;
+            float: left; /*add*/
+            /*margin: 0 auto;*/
+        }
+
+        .num_mask {
+            background: url(images/num_mask.png) 0px 0px no-repeat;
+            height: 184px;
+            width: 740px;
+            position: absolute;
+            left: 50%;
+            top: 340px;
+            margin-left: -370px;
+            z-index: 9;
+        }
+
+        .num_box {
+            height: 450px;
+            width: 750px;
+            position: absolute;
+            left: 50%;
+            top: 340px;
+            margin-left: -370px;
+            z-index: 8;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .num {
+            background: url(images/num.png) top center repeat-y;
+            width: 181px;
+            height: 265px;
+            float: left;
+            margin-right: 6px;
+        }
+
+        .btn {
+            background: url(images/btn_start.png) 0px 0px no-repeat;
+            width: 264px;
+            height: 89px;
+            position: absolute;
+            left: 50%;
+            bottom: 50px;
+            margin-left: -132px;
+            cursor: pointer;
+            clear: both;
+        }
+
+        .right {
+            float: left;
+            background-color: red;
+            height: 1000px;
+            width: 350px;
+            margin-top: 150px;
+        }
+    </style>
 </head>
 <body>
-<div class="main_bg">
-  <div class="main">
-    <!--<div id="res" style="text-align:center;margin-top:200px;color:#fff;"></div>-->
-     
-    <div class="num_mask"></div>
-    <div class="num_box">
-      <div class="num"></div>
-      <div class="num"></div>
-      <div class="num"></div>
-      <div class="num"></div>
-      <div class="btn"></div>
-    </div>      
-  </div>
-</div>
+    <div class="main_bg">
+        <div class="main">
+            <div class="num_mask"></div>
+            <div class="num_box">
+                <div class="num"></div>
+                <div class="num"></div>
+                <div class="num"></div>
+                <div class="num"></div>
+                <div class="btn"></div>
+            </div>
+        </div>
+        <div class="right">
+            <select id="prizeList">
+                <option value="0">一等奖</option>
+                <option value="1">二等奖</option>
+                <option value="2">三等奖</option>
+                <option value="3">四等奖</option>
+                <option value="4">五等奖</option>
+                <option value="5">六等奖</option>
+                <option value="6">七等奖</option>
+                <option value="7">八等奖</option>
+                <option value="8">九等奖</option>
+                <option value="9">十等奖</option>
+            </select>
+            <input type="button" id="reset" value="重置" />
+            <div id="resultprize">
+                <div>
+                    共<span></span>名
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 <script>
-function numRand() {
-	var x = 9999; //上限
-	var y = 0000; //下限
-	var rand = parseInt(Math.random() * (x - y + 1) + y);
-	return rand;
-}
+    var store = datajs.createStore('hfLottery');
+    function numRand() {
+        var x = currentPersons.length; //上限
+        var y = 0000; //下限
+        var rand = parseInt(Math.random() * (x - y + 1) + y);
+        return rand;
+    }
+    Array.prototype.remove = function (indexNum) {
+        if (isNaN(indexNum) || indexNum > this.length) {
+            return false;
+        }
+        this.splice(indexNum, 1);
+    }
+    String.prototype.pedLeft = function (char, len) {
+        var c = char[0];
+        if (this.length >= len) return this;
+        var txt = '';
+        var l = len - this.length;
+        for (var i = 0; i < l; i++) {
+            txt += c;
+        }
 
-var isBegin = false;
+        return txt + this;
+    };
+    var isBegin = false;
+    var currentPrize = prize[0];
+    var currentPersons = [];
+    function addPrize(index) {
+        var person = currentPersons[index];
+        currentPrize.persons.push(currentPersons[index]);
+        //删除
+        currentPersons.remove(currentPersons[index]);
+        emplyees.remove(currentPersons[index]);
+        $('#resultprize').append('<div>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></div>')
+        setTimeout(function () {
+            try {
+                store.addOrUpdate('prize', prize);
+            }
+            catch (e) { }
+        }, 1);
+    }
 
-$(function () {
+    $(function () {
+        var u = 265;
+        LoadCurrentPersion();//加载默认开始奖项的候选人
+        changePrize();//加载奖项
 
-    console.log(emplyees);
+        store.read('prize', function (key, value) {
+            console.log(value);
+            if (value != null && value.length > 0) {
+                value.forEach(function (item, index) {
+                    if (prize.length >= index) {
+                        prize[index].persons = item.persons;
+                    }
+                });
 
-	var u = 265;
-	$('.btn').click(function(){
-		if(isBegin) return false;
-		isBegin = true;
-		$(".num").css('backgroundPositionY',0);
-		var result = numRand();
-		//$('#res').text('result = '+result);
-		var num_arr = (result+'').split('');
-		$(".num").each(function(index){
-			var _num = $(this);
-			setTimeout(function(){
-				_num.animate({ 
-					backgroundPositionY: (u*60) - (u*num_arr[index])
-				},{
-					duration: 6000+index*3000,
-					easing: "easeInOutCirc",
-					complete: function(){
-						if(index==3) isBegin = false;
-						//var pos = _num.css('backgroundPositionY').replace('px','');
-						//_num.css('backgroundPositionY',pos%u);
-					}
-				});
-			}, index * 300);
-		});
-	});
-});
+                changePrize();//加载奖项
+            }
+
+        });
+
+        $('.btn').click(function () {
+            go();
+        });
+
+        function go() {
+            if (currentPrize.num <= currentPrize.persons.length) {
+                return false;
+            }
+            if (isBegin) {
+                var num = numRand();
+                console.log(num);
+                var result = currentPersons[num].id.toString().pedLeft('0', 4);
+                console.log(result);
+                var num_arr = (result + '').split('');
+                $('.num').each(function (index) {
+                    var _num = $(this);
+
+                    setTimeout(function () {
+                        clearInterval(_num.data('ani'));
+                        var px = _num.css('background-position-y').substring(0, _num.css('background-position-y').length - 2);
+                        _num.animate({
+
+                            backgroundPositionY: (u * 60) - (u * num_arr[index])//
+                        }, {
+                            duration: 600 + index * 300,
+                            easing: "jswing",
+                            complete: function () {
+                                if (index == 3) {
+                                    isBegin = false;
+                                    addPrize(num);
+                                }
+                            }
+                        });
+                    }, index * 300);
+                });
+                return;
+            }
+            isBegin = true;
+            $(".num").css('backgroundPositionY', 0);
+           
+            //$(".num").each(function (index) {
+            //    var _num = $(this);
+            //    setTimeout(function () {
+            //        _num.animate({
+            //            backgroundPositionY: (u * 60) - (u * num_arr[index])
+            //        }, {
+            //            duration: 6000 + index * 3000,
+            //            easing: "easeInOutCirc",
+            //            complete: function () {
+            //                if (index == 3) {
+            //                    isBegin = false;
+            //                    addPrize(num);
+
+            //                    if (currentPrize.persons.length < currentPrize.num)
+            //                        go();
+            //                }
+            //                //var pos = _num.css('backgroundPositionY').replace('px','');
+            //                //_num.css('backgroundPositionY',pos%u);
+
+
+            //            }
+            //        });
+            //    }, index * 300);
+            //});
+
+            $('.num').each(function (index) {
+                var targert = $(this);
+                var t = setInterval(function () {
+                    var px = targert.css('background-position-y').substring(0, targert.css('background-position-y').length - 2);
+                    if (px == "" || px == 0) { px = index * 25 + index; };
+                    targert.css('background-position-y', (parseInt(px) + 50) + "px");
+                }, 1);
+                targert.data('ani', t);
+            });
+        }
+
+        function LoadCurrentPersion() {
+            var c = JSLINQ(emplyees).Where(function (item) {
+                if (item == null || item.age == null)
+                    return false;
+                return item.age >= currentPrize.zone.min && item.age <= currentPrize.zone.max;
+            })
+            currentPersons = c.items;
+        }
+
+        function changePrize() {
+            var index = $('#prizeList option:selected').val();
+            currentPrize = prize[index];
+
+
+            //
+            $('#resultprize').text('');
+            $('#resultprize').append('<div>共<span>' + currentPrize.num + '</span>名</div>');
+            currentPrize.persons.forEach(function (person) {
+                $('#resultprize').append('<div>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></div>');
+            });
+        }
+        $('#prizeList').change(function () {
+            changePrize();
+        });
+        $('#reset').click(function () {
+            store.read('prize', function (key, value) {
+                if (value != null && value.length > 0) {
+                    value.forEach(function (item, index) {
+                        if (prize.length >= index) {
+                            prize[index].persons = [];
+                        }
+                    });
+
+                    changePrize();//加载奖项
+                }
+
+            });
+        })
+    });
+
+
+
+
 </script>
