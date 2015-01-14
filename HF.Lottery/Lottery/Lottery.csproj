@@ -80,6 +80,7 @@
     <Content Include="images\num_mask.png" />
     <Content Include="index.html" />
     <Content Include="js\animateBackground-plugin.js" />
+    <Content Include="js\csonv.js" />
     <Content Include="js\easing.js" />
     <Content Include="js\jquery-1.7.2-min.js" />
     <Content Include="manager.html" />

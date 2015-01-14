@@ -35,6 +35,19 @@ namespace Lottery
                     
                 }
             }
+
+            using (var file = File.OpenWrite("D:/name.csv"))
+            {
+                using (var writer = new StreamWriter(file, System.Text.Encoding.UTF8))
+                {
+                    employees.ForEach(item =>
+                    {
+                        writer.WriteLine(string.Format("'{0},{1},{2}", item.Id, item.Name, item.Age));
+                    });
+
+                }
+            }
+
             for(var i = 1; i < 4; i ++)
             {
                 var list = employees.Where(item => item.Zone == 1).ToList();
@@ -44,7 +57,7 @@ namespace Lottery
                     {
                         list.ForEach(item =>
                         {
-                            writer.WriteLine("," + JsonConvert.SerializeObject(item).ToLower());
+                            writer.WriteLine("" + JsonConvert.SerializeObject(item).ToLower());
                         });
                     }
                 }
