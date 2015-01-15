@@ -65,6 +65,7 @@
     <Content Include="images\number1.png" />
     <Content Include="images\number2.png" />
     <Content Include="images\Thumbs.db" />
+    <Content Include="Test.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

@@ -104,4 +104,42 @@ namespace Lottery
         /// </summary>
         public int Zone { get; set; }
     }
+
+
+    public class SortArray
+    {
+        public void Main()
+        {
+            var list = new List<string>();
+            list.Add("123");
+            list.Add("321");
+            list.Add("123");
+            var result = GetSort("", list);
+
+            result.ToList().ForEach(Console.WriteLine);
+        }
+
+
+        public IEnumerable<string> GetSort(string current, List<string> data)
+        {
+            var loc = current.Length;
+
+            if (data.Count > loc)
+            {
+                var array = data[loc].ToArray();
+                for (var i = 0; i < array.Length; i++)
+                {
+                    var it = GetSort(current + array[i], data).GetEnumerator();
+                    while (it.MoveNext())
+                    {
+                        yield return it.Current;
+                    }
+                }
+            }
+            else
+            {
+                yield return current;
+            }
+        }
+    }
 }
