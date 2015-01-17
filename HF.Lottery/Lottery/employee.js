@@ -1,4 +1,5 @@
-﻿var emplyees = [
+﻿var emplyees = [];
+var testing = [
         { "id": 3001, "name": "张三", "age": 1, "prize": "", "zone": 1 },
         { "id": 3002, "name": "张三", "age": 1, "prize": "" },
         ,{"id":0,"name":"章六","depart":null,"age":2,"prized":false,"zone":3}

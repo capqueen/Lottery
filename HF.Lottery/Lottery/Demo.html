@@ -44,6 +44,9 @@
             width:25%;
             margin-top:50px;
         }
+        #audio {
+            display:none;
+        }
     </style>
 
 </head>
@@ -84,17 +87,26 @@
         </div>
     </div>
     <div id="copy">
-        <span class="t_num">
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-            <i style="background-position: 0px 0px;"></i>
-        </span>
+        <div class="div_num">
+            <span class="t_num">
+                <i style="background-position: 0px 0px;"></i>
+                <i style="background-position: 0px 0px;"></i>
+                <i style="background-position: 0px 0px;"></i>
+                <i style="background-position: 0px 0px;"></i>
+                <i style="background-position: 0px 0px;"></i>
+                <i style="background-position: 0px 0px;"></i>
+            </span>
+        </div>
+    </div>
+    <div id="audio">
+        <audio src="/i/horse.ogg" controls="controls">
+            Your browser does not support the audio element.
+        </audio>
     </div>
     <script>
         var store = datajs.createStore('hfLottery');
+        var emplyees = [];
+        //var prize = [];
         function numRand() {
             var x = currentPersons.length; //上限
             var y = 0000; //下限
@@ -140,21 +152,33 @@
             var canBegin = true;
             var u = 300;
 
-            LoadCurrentPersion();//加载默认开始奖项的候选人
-            changePrize();//加载奖项
+           // LoadCurrentPersion();//加载默认开始奖项的候选人
+            //changePrize();//加载奖项
             store.read('prize', function (key, value) {
                 console.log(value);
                 if (value != null && value.length > 0) {
                     value.forEach(function (item, index) {
                         if (prize.length >= index) {
                             prize[index].persons = item.persons;
+                            prize[index].num = item.num;
+                            prize[index].zone = item.zone;
                         }
                     });
 
-                    changePrize();//加载奖项
+
+                    store.read('employees', function (key, value) {
+                        emplyees = value;
+                        LoadCurrentPersion();
+                        changePrize();//加载奖项
+
+                    });
+                    
                 }
 
             });
+
+            
+
             $('#start').click(function () {
                 if (!canBegin) return;
                 if (currentPrize.persons.length >= currentPrize.num) return;
@@ -226,7 +250,7 @@
                 $('#total').text('');
                 for (var i = 0; i < currentPrize.num; i++)
                 {
-                    $('#copy .t_num').clone(true).appendTo('#total');
+                    $('#copy .div_num').clone(true).appendTo('#total');
                 }
                 $('#start').val('开始');
 
