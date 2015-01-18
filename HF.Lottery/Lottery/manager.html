@@ -32,9 +32,18 @@ content: "Example";
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <ul class="nav nav-pills">
+        <li class="active">
+            <a href="Demo.html">抽奖页</a>
+        </li>
+        <li><a href="#prize">设置奖项</a></li>
+        <li><a href="#import">导入员工</a></li>
+        <li><a href="#list">获奖名单</a></li>
+    </ul>
+    <div class="container">       
         <h2>设置奖项</h2>
-        <div class="panel panel-default">
+        <div id="prize" class="panel panel-default">
             <!-- Table -->
             <table class="table">
                 <thead>
@@ -59,27 +68,29 @@ content: "Example";
         <br />
         <br />
         <h2>员工名单</h2>
-        <div class="bs-callout bs-callout-warning" id="callout-buttons-color-accessibility">
-            <h4>注意</h4>
-            <p>导入后员工名单可以在下方预览，如不正确请重新导入。每次导入会覆盖历史数据,默认为测试数据</p>
-            <p>员工名单格式要求为CSV文件，列分别为 工号,姓名,工龄,部门</p>
+        <div id="import">
+            <div class="bs-callout bs-callout-warning" id="callout-buttons-color-accessibility">
+                <h4>注意</h4>
+                <p>导入后员工名单可以在下方预览，如不正确请重新导入。每次导入会覆盖历史数据,默认为测试数据</p>
+                <p>员工名单格式要求为CSV文件，列分别为 工号,姓名,工龄,部门</p>
+            </div>
+            导入员工名单<input type="file" id="file" class="btn btn-success" onchange="handleFiles(this.files)" />
+            <div class="highlight">
+                <button class="close" data-toggle="tooltip" title="隐藏">&times;</button>
+            </div>
         </div>
-        导入员工名单<input type="file" id="file" class="btn btn-success" onchange="handleFiles(this.files)" />
-        <div class="highlight">
-            <button class="close" data-toggle="tooltip" title="隐藏">&times;</button>
-        </div>
-
 
         <br/>
         <br/>
         <h2>获奖名单</h2>
-        <div>
+        <div id="list">
             <!-- ko foreach: prizes -->
             <div>
                 <h4 data-bind="text:$data.name"></h4>
                 <table class="table">
                     <thead>
                         <tr>
+                            <td>#</td>
                             <td>工号</td>
                             <td>姓名</td>
                             <td>部门</td>
@@ -87,6 +98,7 @@ content: "Example";
                     </thead>
                     <tbody data-bind="foreach: $data.persons">
                         <tr>
+                            <td data-bind="text:$index"></td>
                             <td data-bind="text:id"></td>
                             <td data-bind="text:name"> </td>
                             <td></td>

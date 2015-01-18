@@ -61,6 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\docs.min.css" />
+    <Content Include="Content\musicOfDraw.mp3" />
+    <Content Include="Content\musicOfRolling.mp3" />
+    <Content Include="Content\滚动时音效.mp3" />
     <Content Include="Demo.html" />
     <Content Include="images\number.png" />
     <Content Include="images\number1.png" />

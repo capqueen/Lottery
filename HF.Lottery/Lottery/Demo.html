@@ -15,7 +15,6 @@
             line-height: 40px;
             margin: 80px 4px 0 4px;
             font-size: 20px;
-
         }
 
             #total .t_num {
@@ -34,18 +33,27 @@
                     text-indent: -999em;
                     margin-top: 4px;
                 }
+
         .left, .right {
-            float:left;
+            float: left;
         }
+
         .left {
-            width:70%;
+            width: 70%;
         }
+
         .right {
-            width:25%;
-            margin-top:50px;
+            width: 25%;
+            margin-top: 50px;
         }
+
         #audio {
-            display:none;
+            display: none;
+        }
+
+        #resultprize {
+            height: 500px;
+            overflow-y: scroll;
         }
     </style>
 
@@ -61,7 +69,7 @@
                     <i style="background-position: 0px 0px;"></i>
                     <i style="background-position: 0px 0px;"></i>
                     <i style="background-position: 0px 0px;"></i>
-                </span>              
+                </span>
             </div>
             <div><input type="button" id="start" value="开始" /></div>
         </div>
@@ -77,8 +85,9 @@
                 <option value="7">八等奖</option>
                 <option value="8">九等奖</option>
                 <option value="9">十等奖</option>
+                <option value="10">嘉奖</option>
             </select>
-            <input type="button" id="reset" value="重置" />
+            <!--<input type="button" id="reset" value="重置" />-->
             <div id="resultprize">
                 <div>
                     共<span></span>名
@@ -99,7 +108,10 @@
         </div>
     </div>
     <div id="audio">
-        <audio src="/i/horse.ogg" controls="controls">
+        <audio id="roll" src="Content/musicOfRolling.mp3" loop="loop" controls="controls">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="draw" src="Content/musicOfDraw.mp3" controls="controls">
             Your browser does not support the audio element.
         </audio>
     </div>
@@ -152,7 +164,7 @@
             var canBegin = true;
             var u = 300;
 
-           // LoadCurrentPersion();//加载默认开始奖项的候选人
+            // LoadCurrentPersion();//加载默认开始奖项的候选人
             //changePrize();//加载奖项
             store.read('prize', function (key, value) {
                 console.log(value);
@@ -164,27 +176,23 @@
                             prize[index].zone = item.zone;
                         }
                     });
-
-
-                    store.read('employees', function (key, value) {
-                        emplyees = value;
-                        LoadCurrentPersion();
-                        changePrize();//加载奖项
-
-                    });
-                    
                 }
+                store.read('employees', function (key, value) {
+                    emplyees = value;
+                    LoadCurrentPersion();
+                    changePrize();//加载奖项
 
+                });
             });
-
-            
 
             $('#start').click(function () {
                 if (!canBegin) return;
                 if (currentPrize.persons.length >= currentPrize.num) return;
                 if (isStart) {
-                    canBegin = false;                                           
+                    canBegin = false;
                     $(this).val('开始');
+                    document.getElementById('roll').pause();
+                    document.getElementById('draw').play();
                     $('#total .t_num').each(function (i) {
                         var num = numRand();
                         var result = currentPersons[num].id.toString().pedLeft('0', 6);
@@ -217,6 +225,17 @@
                 else {
                     isStart = true;
                     $(this).val('停止');
+                    //重新渲染
+                    if (currentPrize.num - currentPrize.persons.length < 10) {
+                        $('#total').text('');
+                        for (var i = 0; i < currentPrize.num - currentPrize.persons.length; i++) {
+                            $('#copy .div_num').clone(true).appendTo('#total');
+                        }
+                    }
+
+
+                    document.getElementById('roll').play();
+                    //document.getElementById('draw').play();
                     $('#total .t_num i').each(function (index) {
                         var targert = $(this);
                         var t = setInterval(function () {
@@ -248,37 +267,26 @@
                 isStart = false;
                 canBegin = true;
                 $('#total').text('');
-                for (var i = 0; i < currentPrize.num; i++)
-                {
+                var curTol = currentPrize.num > 10 ? 10 : currentPrize.num;
+                for (var i = 0; i < curTol; i++) {
                     $('#copy .div_num').clone(true).appendTo('#total');
                 }
                 $('#start').val('开始');
 
                 //
                 $('#resultprize').text('');
-                $('#resultprize').append('<div>共<span>' + currentPrize.num + '</span>名</div>');
+                if (index != 10) {
+                    $('#resultprize').append('<div>共<span>' + currentPrize.num + '</span>名</div>');
+                }
                 currentPrize.persons.forEach(function (person) {
-                    $('#resultprize').append('<div>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></div>');
+                    $('#resultprize').append('<p>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></p>');
                 });
             }
             $('#prizeList').change(function () {
                 changePrize();
             });
-            $('#reset').click(function () {
-                store.read('prize', function (key, value) {
-                    if (value != null && value.length > 0) {
-                        value.forEach(function (item, index) {
-                            if (prize.length >= index) {
-                                prize[index].persons = [];
-                            }
-                        });
 
-                        changePrize();//加载奖项
-                    }
-
-                });
-            })
-        });   
+        });
     </script>
 </body>
 </html>
