@@ -29,6 +29,13 @@ content: "Example";
             white-space: pre!important;
             max-height:400px;
         }
+        .right {
+            float: left;
+            /*background-color: red;*/
+            height: 1000px;
+            width: 350px;
+            margin-top: 150px;
+        }
     </style>
 </head>
 <body>
@@ -40,6 +47,7 @@ content: "Example";
         <li><a href="#prize">设置奖项</a></li>
         <li><a href="#import">导入员工</a></li>
         <li><a href="#list">获奖名单</a></li>
+        <li><a href="#lattery">抽奖</a></li>
     </ul>
     <div class="container">       
         <h2>设置奖项</h2>
@@ -73,6 +81,7 @@ content: "Example";
                 <h4>注意</h4>
                 <p>导入后员工名单可以在下方预览，如不正确请重新导入。每次导入会覆盖历史数据,默认为测试数据</p>
                 <p>员工名单格式要求为CSV文件，列分别为 工号,姓名,工龄,部门</p>
+                <p><a href="name.csv">点击下载测试Demo.csv</a></p>
             </div>
             导入员工名单<input type="file" id="file" class="btn btn-success" onchange="handleFiles(this.files)" />
             <div class="highlight">
@@ -109,6 +118,34 @@ content: "Example";
             <br />
             <!-- /ko -->
         </div>
+
+
+        <br/>
+        <br/>
+        <h2>抽奖</h2>
+        <div id="lattery">
+            <div><input type="button" class="=btn btn-success btn-lg" data-bind="click:latt, value:btnvalue" id="latt" value="开始" /></div>
+            <div class="right">
+                <select id="prizeList">
+                    <option value="0">一等奖</option>
+                    <option value="1">二等奖</option>
+                    <option value="2">三等奖</option>
+                    <option value="3">四等奖</option>
+                    <option value="4">五等奖</option>
+                    <option value="5">六等奖</option>
+                    <option value="6">七等奖</option>
+                    <option value="7">八等奖</option>
+                    <option value="8">九等奖</option>
+                    <option value="9">十等奖</option>
+                    <option value="10">嘉奖</option>
+                </select>
+                <!--<input type="button" id="reset" value="重置" />-->
+                <div id="resultprize">
+                    <div>
+                        共<span></span>名
+                    </div>
+                </div>
+            </div>
     </div>
     <script type="text/javascript" src="Scripts/jquery-2.1.3.js"></script>
     <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
@@ -144,6 +181,7 @@ content: "Example";
         }
 
         var store = datajs.createStore('hfLottery');
+        currentPrize = null;
         $(document).ready(function () {
             function viewModel() {
                 self = this;
@@ -168,10 +206,12 @@ content: "Example";
                     alert('重置成功!');
                 }
                 store.read('prize', function (key, value) {
-                    console.log(value);
                     if (value == null)
                         value = window.prize;
                     if (value != null && value.length > 0) {
+                        currentPrize = value[0];
+                        prize = value;
+                        changePrize();
                         value.forEach(function (item, index) {
                             if (prize.length >= index) {
                                 prize[index].persons = item.persons;
@@ -181,16 +221,40 @@ content: "Example";
                             self.prizes.push(item);
                         });
                     }
-
-
-
                 });
+                
+                self.btnvalue = ko.observable('开始');
+                self.latt = function () {
+                    store.read('prize', function (key, value) {
+                        currentPrize = value[$('#prizeList option:selected').val()];
+                        if (currentPrize.persons.length >= currentPrize.num) {
+                            alert('当前奖项已抽完！');
+                            return;
+                        }
+                        $('#prizeList option:selected').val()
+                        store.addOrUpdate('start', true);
+                        store.addOrUpdate('currentprize', $('#prizeList option:selected').val());
+                        if (self.btnvalue() == "开始") {
+                            self.btnvalue('停止');
+                            window.ti = setInterval(function () {
+                                store.read('prize', function (key, value) {
+                                    prize = value;
+                                    currentPrize = value[$('#prizeList option:selected').val()];
+                                    if (currentPrize.persons.length == currentPrize.num)
+                                        clearInterval(window.ti);
 
-
+                                    changePrize();
+                                });
+                            }, 3000);
+                        } else {
+                            self.btnvalue('开始');
+                        }
+                    });
+                    }
             };
 
             $('.close').click(function () {
-
+                
 
                 if ($(this).attr('title') == '显示') {
                     $('.highlight pre').show();
@@ -201,7 +265,20 @@ content: "Example";
                 $('.highlight pre').hide();
 
             });
-
+            function changePrize() {
+                index = $('#prizeList option:selected').val();
+                    currentPrize = prize[index];                  
+                    $('#resultprize').text('');
+                    if (index != 10) {
+                        $('#resultprize').append('<div>共<span>' + currentPrize.num + '</span>名</div>');
+                    }
+                    currentPrize.persons.forEach(function (person) {
+                        $('#resultprize').append('<p>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></p>');
+                    });
+            };
+            $('#prizeList').change(function () {
+                changePrize();
+            });
             window.model = new viewModel();
             ko.applyBindings(model);
         });
