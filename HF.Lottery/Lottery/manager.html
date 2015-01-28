@@ -126,7 +126,7 @@ content: "Example";
         <div id="lattery">
             <div><input type="button" class="=btn btn-success btn-lg" data-bind="click:latt, value:btnvalue" id="latt" value="开始" /></div>
             <div class="right">
-                <select id="prizeList">
+                <select id="prizeList" >
                     <option value="0">一等奖</option>
                     <option value="1">二等奖</option>
                     <option value="2">三等奖</option>
@@ -167,7 +167,7 @@ content: "Example";
                         var per = array[i].split(',');
                         if (per.length >= 3) {
                             ps.push(
-                                { "id": per[0], "name": per[1], "depart": per[3], "age": per[2], "prized": false }
+                                { "id": per[0], "name": per[1], "depart": per[3], "age": parseInt(per[2]), "prized": false }
                             );
                         }
                     }
@@ -182,9 +182,11 @@ content: "Example";
 
         var store = datajs.createStore('hfLottery');
         currentPrize = null;
+        var isreading = false;
         $(document).ready(function () {
             function viewModel() {
                 self = this;
+                
                 self.prizes = ko.observableArray([]);
                 self.sumit = function () {
                     store.addOrUpdate('prize', self.prizes());
@@ -232,22 +234,35 @@ content: "Example";
                             return;
                         }
                         $('#prizeList option:selected').val()
+                        var currentIndex = currentPrize.persons.length;
                         store.addOrUpdate('start', true);
                         store.addOrUpdate('currentprize', $('#prizeList option:selected').val());
                         if (self.btnvalue() == "开始") {
+                            $("#prizeList").attr("disabled", "disabled");
+                            if (isreading) {
+                                alert('正在抽奖请等待');
+                                return;
+                            }
                             self.btnvalue('停止');
+                           
+                        } else {
+                            isreading = true;
+                            self.btnvalue('正在停止');
+                            
                             window.ti = setInterval(function () {
                                 store.read('prize', function (key, value) {
                                     prize = value;
                                     currentPrize = value[$('#prizeList option:selected').val()];
-                                    if (currentPrize.persons.length == currentPrize.num)
+                                    if (currentPrize.persons.length == currentPrize.num || (currentPrize.persons.length > currentIndex && currentPrize.persons.length % 10 == 0)) {
                                         clearInterval(window.ti);
+                                        isreading = false;
+                                        $("#prizeList").removeAttr("disabled");
+                                        self.btnvalue('开始');
+                                    }
 
                                     changePrize();
                                 });
-                            }, 3000);
-                        } else {
-                            self.btnvalue('开始');
+                            }, 1000);
                         }
                     });
                     }

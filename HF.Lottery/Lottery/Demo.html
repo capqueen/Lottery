@@ -193,7 +193,7 @@
         var emplyees = [];
         //var prize = [];
         function numRand() {
-            var x = currentPersons.length; //上限
+            var x = currentPersons.length - 1; //上限
             var y = 0000; //下限
             var rand = parseInt(Math.random() * (x - y + 1) + y);
             return rand;
@@ -243,7 +243,7 @@
                         changePrize(true);
                     }
                 })
-            }, 1000);
+            }, 100);
             // LoadCurrentPersion();//加载默认开始奖项的候选人
             //changePrize();//加载奖项
             store.read('prize', function (key, value) {
@@ -275,7 +275,9 @@
                     document.getElementById('draw').play();
                     $('#total .t_num').each(function (i) {
                         var num = numRand();
+                        console.log(num);
                         var result = currentPersons[num].id.toString().pedLeft('0', 6);
+                        console.log(result);
                         var num_arr = (result + '').split('');
                         //开始减速动画
                         $(this).children('i').each(function (index) {
@@ -305,20 +307,16 @@
                 else {
                     isStart = true;
                     $(this).val('停止');
-                    //重新渲染
-                    //if (currentPrize.num - currentPrize.persons.length < 10) {
-                        //$('#total').text('');
-                        for (var i = 0; i < currentPrize.num - currentPrize.persons.length; i++) {
-                            //$('#copy .div_num').clone(true).appendTo('#total');
-                            $('#total span').eq(i).addClass('t_num');
+                    //重新渲染   
+                    var max = currentPrize.num - currentPrize.persons.length;
+                    max = max > 10 ? 10: max;
+                        for (var i = 0; i < max; i++) {                            
+                            $('#total span').eq(i).addClass('t_num').children().css("background-position", "0px 0px");
                         }
-                        for (var i = currentPrize.num - currentPrize.persons.length; i < 10; i++) {
-                            //$('#copy .div_num').clone(true).remove().appendTo('#total');
-                            $('#total span').eq(i).removeClass('t_num').css("background-position","0px 0px");
-                        }
-                   // }
-                    document.getElementById('roll').play();
-                    //document.getElementById('draw').play();
+                        for (var i = currentPrize.num - currentPrize.persons.length; i < 10; i++) {                            
+                            $('#total span').eq(i).removeClass('t_num').children().css("background-position","0px 0px");
+                        }                   
+                    document.getElementById('roll').play();                    
                     $('#total .t_num i').each(function (index) {
                         var targert = $(this);
                         var t = setInterval(function () {
@@ -332,6 +330,10 @@
                 }
             });
             function LoadCurrentPersion() {
+                if (currentPrize.id == 11) {
+                    currentPersons = emplyees;
+                    return;
+                }
                 var c = JSLINQ(emplyees).Where(function (item) {
                     if (item == null || item.age == null)
                         return false;
@@ -345,24 +347,19 @@
                     var index = value;
                     if (index == null || index < 0)
                         index = 0;
-                    currentPrize = prize[index];
+                    
                     if (currentPrize.id != prize[index].id) {
-                        $('.t_num i').each(function (index) {
-                            clearInterval($(this).data('ani'));
-                        });
-                        //isStart = false;
-                        //canBegin = true;
-                        $('#start').val('开始');
-                        $('#resultprize').text('');
-                        if (index != 10) {
-                            $('#resultprize').append('<div>共<span>' + currentPrize.num + '</span>名</div>');
-                        }
-                        currentPrize.persons.forEach(function (person) {
-                            $('#resultprize').append('<p>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></p>');
-                        });
+                        //$('.t_num i').each(function (index) {
+                        //    clearInterval($(this).data('ani'));
+                        //});
+                        ////isStart = false;
+                        ////canBegin = true;
+                        //$('#start').val('开始'); 
                         LoadCurrentPersion();
+                        currentPrize = prize[index];
                     }
-
+                    
+                   
 
                     if (auto == true) {
                         $('#start').click();
