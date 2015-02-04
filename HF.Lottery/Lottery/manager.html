@@ -290,6 +290,7 @@ content: "Example";
                     currentPrize.persons.forEach(function (person) {
                         $('#resultprize').append('<p>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></p>');
                     });
+                    store.addOrUpdate('currentprize', $('#prizeList option:selected').val());
             };
             $('#prizeList').change(function () {
                 changePrize();
