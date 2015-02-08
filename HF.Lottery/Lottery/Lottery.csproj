@@ -67,8 +67,6 @@
     <Content Include="Demo.html" />
     <Content Include="images\company.png" />
     <Content Include="images\hand.png" />
-    <Content Include="images\number.png" />
-    <Content Include="images\number1.png" />
     <Content Include="images\number2.png" />
     <Content Include="images\num_hide.png" />
     <Content Include="images\num_marsk.png" />
