@@ -65,9 +65,13 @@
     <Content Include="Content\musicOfRolling.mp3" />
     <Content Include="Content\滚动时音效.mp3" />
     <Content Include="Demo.html" />
+    <Content Include="images\company.png" />
+    <Content Include="images\hand.png" />
     <Content Include="images\number.png" />
     <Content Include="images\number1.png" />
     <Content Include="images\number2.png" />
+    <Content Include="images\num_hide.png" />
+    <Content Include="images\num_marsk.png" />
     <Content Include="images\Thumbs.db" />
     <Content Include="images\star1.png" />
     <Content Include="images\star2.png" />
@@ -78,6 +82,7 @@
     <Content Include="images\bg.png" />
     <Content Include="images\zhao.png" />
     <Content Include="images\cion.png" />
+    <Content Include="num.html" />
     <Content Include="Test.html" />
   </ItemGroup>
   <ItemGroup>

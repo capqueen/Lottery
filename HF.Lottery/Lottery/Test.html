@@ -15,33 +15,34 @@
             border: 0 none;
             padding: 0;
             /*text-align:center;*/
+            overflow: hidden;
         }
 
         #total {
-            font-size: 20px;
-            margin-top: -690px;
+            font-size: 10px;
+            margin-top: -684px;
             position: absolute;
-            width: 524px;
-            margin-left: 83px;
+            width: 509px;
+            margin-left: -230px;
             top: 100%;
+            left: 50%;
         }
 
-            #total .t_num, #total span {
+            #total .num-box, #total span {
                 display: inline-block;
                 line-height: 13px;
-                margin: auto 4px 0 4px;
-                /*border: 1px solid rgb(223, 216, 216);*/
+                margin: -1px 0px 1px 0px;
             }
 
-                #total .t_num i, #total span i {
-                    width:  77.3px;
+                #total .num-box i, #total span i {
+                    width: 77.3px;
                     height: 50px;
                     display: inline-block;
                     background: url(images/num1.png) repeat-y;
                     background-position: 0 0;
                     text-indent: -999em;
                     margin-top: 6px;
-                    margin-bottom:6px;
+                    margin-bottom: 6px;
                 }
 
         #audio {
@@ -61,7 +62,6 @@
 
         .swapper {
             position: absolute;
-            /*text-align:center;*/
             top: 50%;
             left: 50%;
             margin-left: -340px;
@@ -75,7 +75,8 @@
             margin-bottom: 300px;
             margin-left: -78px;
         }
-         #audio {
+
+        #audio {
             display: none;
         }
 
@@ -83,96 +84,275 @@
             height: 500px;
             overflow-y: scroll;
         }
+
+        .cion-pic {
+            position: absolute;
+            z-index: 99;
+            width: 1259px;
+            height: 760px;
+            top: 10px;
+            left: 19px;
+            overflow: hidden;
+        }
+
+        .num {
+            width: 77px;
+            height: 64px;
+            display: inline-block;
+            text-indent: -999em;
+            z-index: 1;
+            background: url(images/num1.png) repeat-y;
+            background-position: 0px 16px;
+        }
+
+        .num-back {
+            background-image: url(images/num_hide.png);
+            float: left;
+            height: 64px;
+            width: 64px;
+            z-index: 0;
+            margin:0px 0px 0px 10px;
+        }
+
+        .num-mask {
+            float: left;
+            z-index: 99;
+            width: 64px;
+            height: 64px;
+            background-image: url("images/num_marsk.png");
+            position: absolute;
+        }
     </style>
 </head>
 <body>
     <img border=0 id=smallslot src="images/bg.png" style="position:absolute; z-index:0" align=left onload="this.width = screen.width; this.height = window.screen.height;">
-
+    <img src="images/company.png" style="position:absolute;z-index:9;left:50%;margin-left:-350px" />
+    <img class="cion-pic" src="images/cion.png" style="position:absolute;z-index:9;" />
     <div class="swapper">
 
-        <img border=0 src="images/machine.png" style="z-index:1;" width="680" height="768" />
-        <img style="-webkit-user-select: none" src="images/hand.gif" class="hand">
+        <img border=0 src="images/machine.png" style="z-index:1;" width="600" height="768" />
+        <img style="-webkit-user-select: none" src="images/hand.png" class="hand">
         <div id="total">
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
-            <span class="t_num">
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-                <i style="background-position: 0px 0px;"></i>
-            </span>
+            <div class="t_num num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
+            <div class="t_num  num-box">
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+                <div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div><div class="num-back" style="">
+                    <img class="num-mask" src="images/num_marsk.png">
+                    <div class="num"></div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -254,29 +434,7 @@
         var prizedPerson = [];
         function addPrize(index) {
             var person = currentPersons[index];
-            currentPrize.persons.push(currentPersons[index]);
-            ////删除
-            //currentPersons.remove(index);
-            //var find = [];
-            //for (var i = 0; i < emplyees.length; i++)
-            //{
-            //    if (emplyees[i].id == undefined || person.id == undefined)
-            //    {
-            //        console.log(i);
-            //        console.log(emplyees[i]);
-            //        console.log(person);
-            //    }
-            //    if (emplyees[i].id == person.id)
-            //    {
-            //        find.push(i);
-            //        //emplyees.remove(i);
-            //        //break;
-            //    }
-            //}
-
-            //for (var i = 0; i < find.length; i++) {
-            //    emplyees.remove(i);
-            //}
+            currentPrize.persons.push(currentPersons[index]);            
             prizedPerson.push(person);
             $('#resultprize').append('<div>工号:<span>' + person.id + '</span>姓名:<span>' + person.name + '</span></div>')
             setTimeout(function () {
@@ -291,7 +449,7 @@
         $(document).ready(function () {
             var isStart = false;
             var canBegin = true;
-            var u = 500;
+            var u = 320;
             setInterval(function () {
                 store.read('start', function (key, value) {
                     if (value == true) {
@@ -331,8 +489,7 @@
             });
             function isPrized(id) {
                 for (var i = 0; i < prizedPerson.length; i++) {
-                    if (prizedPerson[i].id == id)
-                    {
+                    if (prizedPerson[i].id == id) {
                         return true;
                     }
 
@@ -350,34 +507,31 @@
                     //生成 相应个
                     var okNum = [];
                     for (var ii = 0; ii < $('#total .t_num').length; ii++) {
-                        var num = numRand();                        
+                        var num = numRand();
                         okNum.push(currentPersons[num]);
                         currentPrize.persons.push(currentPersons[num]);
                         //var find = [];
-                        for (var ij = 0; ij < emplyees.length; ij++)
-                        {
-                            if (emplyees[ij].id == undefined || currentPersons[num].id == undefined)
-                            {
+                        for (var ij = 0; ij < emplyees.length; ij++) {
+                            if (emplyees[ij].id == undefined || currentPersons[num].id == undefined) {
                                 console.log(ij);
                                 console.log(emplyees[ij]);
                                 console.log(person);
                             }
-                            if (emplyees[ij].id == currentPersons[num].id)
-                            {
+                            if (emplyees[ij].id == currentPersons[num].id) {
                                 emplyees.remove(ij);
                                 break;
                             }
                         }
                         currentPersons.remove(num);
                     }
-                    
+
                     $('#total .t_num').each(function (i) {
-                        
+
                         var result = okNum[i].id.toString().pedLeft('0', 6);
                         console.log(result);
                         var num_arr = (result + '').split('');
                         //开始减速动画
-                        $(this).children('i').each(function (index) {
+                        $(this).find('.num').each(function (index) {
                             var _num = $(this);
 
                             setTimeout(function () {
@@ -385,15 +539,23 @@
                                 var px = _num.css('background-position-y').substring(0, _num.css('background-position-y').length - 2);
                                 _num.animate({
 
-                                    backgroundPositionY: (500 - num_arr[index] * 50) + (Math.round(px / u) + 1) * (index + 1) * u//(u * 60) - (u * num_arr[index])
+                                    backgroundPositionY: (320 - num_arr[index] * 32) + (Math.round(px / u) + 1) * (index + 1) * u + 16//(u * 60) - (u * num_arr[index])
                                 }, {
-                                    duration: 600 + index * 300,
+                                    duration: 600 + index * 320,
                                     easing: "jswing",
                                     complete: function () {
                                         if (index == 5) {
                                             isStart = false;
                                             canBegin = true;
-                                            //addPrize(num);
+                                            if (i == ($('#total .t_num').length - 1)) {
+                                                setTimeout(function () {
+                                                    try {
+                                                        store.addOrUpdate('prize', prize);
+                                                        store.addOrUpdate('emplyees', emplyees);
+                                                    }
+                                                    catch (e) { }
+                                                }, 1);
+                                            }
                                         }
                                     }
                                 });
@@ -401,16 +563,7 @@
                         })
 
 
-                        if (i == ($('#total .t_num').length - 1))
-                        {
-                            setTimeout(function () {
-                                try {
-                                    store.addOrUpdate('prize', prize);
-                                    store.addOrUpdate('emplyees', emplyees);
-                                }
-                                catch (e) { }
-                            }, 1);
-                        }
+                        
 
                     });
                 }
@@ -421,17 +574,17 @@
                     var max = currentPrize.num - currentPrize.persons.length;
                     max = max > 10 ? 10 : max;
                     for (var i = 0; i < max; i++) {
-                        $('#total span').eq(i).addClass('t_num').children().css("background-position", "0px 0px");
+                        $('#total  .num-box').eq(i).addClass('t_num').find('.num').css("background-position", "0px 16px");
                     }
                     for (var i = currentPrize.num - currentPrize.persons.length; i < 10; i++) {
-                        $('#total span').eq(i).removeClass('t_num').children().css("background-position", "0px 0px");
+                        $('#total .num-box').eq(i).removeClass('t_num').find('.num').css("background-position", "0px 16px");
                     }
                     document.getElementById('roll').play();
-                    $('#total .t_num i').each(function (index) {
+                    $('#total .t_num .num').each(function (index) {
                         var targert = $(this);
                         var t = setInterval(function () {
                             var px = targert.css('background-position-y').substring(0, targert.css('background-position-y').length - 2);
-                            if (px == "" || px == 0) { px = index * 25 + index; };
+                            if (px == "" || px == 16) { px = (index+1) * 32 + index + 1; };
                             targert.css('background-position-y', (parseInt(px) + 2) + "px");
                         }, 1);
                         targert.data('ani', t);
@@ -459,15 +612,15 @@
                         index = 0;
 
                     //if (currentPrize.id != prize[index].id) {
-                        //$('.t_num i').each(function (index) {
-                        //    clearInterval($(this).data('ani'));
-                        //});
-                        ////isStart = false;
-                        ////canBegin = true;
+                    //$('.t_num i').each(function (index) {
+                    //    clearInterval($(this).data('ani'));
+                    //});
+                    ////isStart = false;
+                    ////canBegin = true;
                     //$('#start').val('开始');
                     currentPrize = prize[index];
-                        LoadCurrentPersion();
-                        
+                    LoadCurrentPersion();
+
                     //}
 
 
@@ -476,7 +629,7 @@
                         $('#start').click();
                     }
                 })
-            };           
+            };
 
         });
     </script>
